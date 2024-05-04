@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>mission-clock</title>
+</head>
+<body id="myBody">
+
+
+<style>
+body {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 720px;
+  height: 1280px;
+  border: 1px #f0f dashed;
+}
+.grid-container {
+  height: 100%;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: repeat(3, auto);
+}
+
+.george-font { 
+  font-family: Consolas, monaco, monospace;
+  font-size: 40px;
+}
+.button-size {
+  width: 100px;
+  height: 50px;
+  display: block;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+</style>
+
+<!-- -->
+
+
+<script>
+
+function start(){
+document.getElementById("startClock").innerHTML = "";
+document.getElementById("startClock").className = "grid-container";
+let newDivone = document.createElement("div");
+newDivone.className="george-font"; newDivone.style="text-align: center"; newDivone.id="grid-item-one";
+let newDivtwo = document.createElement("div");
+newDivtwo.className="george-font"; newDivtwo.style="text-align: center"; newDivtwo.id="grid-item-two";
+let newDivthree = document.createElement("div"); 
+newDivthree.className="george-font"; newDivthree.style="text-align: center"; newDivthree.id="grid-item-three";
+
+document.getElementById("startClock").appendChild(newDivone);
+document.getElementById("startClock").appendChild(newDivtwo);
+document.getElementById("startClock").appendChild(newDivthree);
+
+setInterval(gigaClock, 33);
+}
+
+function months(monthNum, yearNum){
+var monthDays = [];
+monthDays.push(31); monthDays.push(59); monthDays.push(90); monthDays.push(120); monthDays.push(151); monthDays.push(181); monthDays.push(212); monthDays.push(243); monthDays.push(273); monthDays.push(304); monthDays.push(334); monthDays.push(365);
+if(monthNum == 1){return(0)}else if (yearNum == 2024 & (monthNum-1) == 0)
+{return(monthDays[(monthNum-1)]);}
+else {return(monthDays[(monthNum-1)] + 1);};
+} 
+
+function gigaClock(){
+var date = new Date;
+var seconds = date.getSeconds();
+var minutes = date.getMinutes();
+var hour = date.getHours();
+var year = date.getFullYear();
+var month = date.getMonth(); 
+var day = date.getDate();
+var milliSeconds = date.getMilliseconds();
+const stringTime = String(hour) + ":" + String(minutes) + ":" + String(seconds) + " EDT";
+const endSeconds = Number(2*(60*60*24*365) + (43)*(60*60*24) + 60*60*24*365*Number(year-1) );
+const currentSeconds = Number(seconds) + 60* Number(minutes) + 60*60*Number(hour) + 60*60*24*Number(day) + 60*60*24*months(month,year) + 60*60*24*365*Number(year-1);
+const secondsDone = (60*60*24*365*2)-((endSeconds-currentSeconds)+ (milliSeconds*.001));
+const yearsecConst = (2*60*60*24*365);
+
+if (window.orientation === 0 || window.orientation === 180) { 
+  document.getElementById("myBody").style.height = "1280px";
+} else if (window.orientation === 90 || window.orientation === -90) {
+  document.getElementById("myBody").style.height = "390px";
+}
+
+document.getElementById("grid-item-one").innerHTML = String("My mission count down!");
+document.getElementById("grid-item-two").innerHTML = String(stringTime);
+document.getElementById("grid-item-three").innerHTML = String( ((100/(yearsecConst)) * secondsDone).toFixed(7) )+"% of the way through my mission.";
+}
+</script>
+
+<div  id="startClock"><button class="button-size" onclick='start()' >Start Clock</button></div>
+</body>
+</html>
